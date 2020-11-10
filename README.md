@@ -16,4 +16,5 @@ CO2-Sensor with VZ89-TE and WIFIKIT32
 - Connect cathode of an LED to pin 19 of WIFI KIT and anode via a resistor (1k or so) to 3.3V. Useful for determining if program is running
 - The WIFI KIT 32 Pinout can be found here https://resource.heltec.cn/download/WiFi_Kit_32/WIFI_Kit_32_pinoutDiagram_V2.pdf
 - Beware: there seem to exist WIFI KIT 32 versions with a mirrored pinout!
+- A picture of the setup can be found here: https://dm1cr.de/co2-sensor-gegen-corona-version-mit-wifi-kit-32-und-sgx-sensortech-mics-vz89te-und-micropython
    
