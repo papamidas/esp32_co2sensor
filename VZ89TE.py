@@ -1,13 +1,11 @@
-# VZ89TE.py
-# simple class for CO2-Sensor
-# DM1CR, Nov. 2020
-#
 from machine import Pin, I2C
+import utime
 
 VZ89TE_Address = 0x70
 VZ89TE_CMD_GETSTATUS = bytes([0xC,0,0,0,0,0xF3])
 VZ89TE_CMD_GETREVISION = bytes([0xD,0,0,0,0,0xF2])
 VZ89TE_CMD_GETR0 = bytes([0x10,0,0,0,0,0xEF])
+VZ_89TE_DATE_CODE = 0x0D
 
 class VZ89TE:
     
@@ -34,8 +32,13 @@ class VZ89TE:
     
     def cmdGetStatus(self):
         self._acks = self._i2c.writeto(self._i2c_addr,VZ89TE_CMD_GETSTATUS)
+        #print("Acks: ", self._acks)
+        utime.sleep_ms(100)
         self._d = self._i2c.readfrom(self._i2c_addr, 7)
         self.calcCrc(self._d)
+        #print("CRC empfangen: ", self._rd[-1], " CRC berechnet: ", self._crc)
+        #for b in self._rd:
+        #    print(" ", hex(b))
         if(self._d[-1] != self._crc):
             raise ValueError('crc error.')
         return self._d
@@ -53,6 +56,7 @@ class VZ89TE:
 
     def cmdGetRevision(self):
         self._i2c.writeto(self._i2c_addr,VZ89TE_CMD_GETREVISION)
+        utime.sleep_ms(100)
         self._r = self._i2c.readfrom(self._i2c_addr, 7)
         self.calcCrc(self._r)
         if(self._r[-1] != self._crc):
@@ -72,6 +76,7 @@ class VZ89TE:
 
     def cmdGetR0(self):
         self._i2c.writeto(self._i2c_addr,VZ89TE_CMD_GETR0)
+        utime.sleep_ms(100)
         self._r0 = self._i2c.readfrom(self._i2c_addr, 7)
         self.calcCrc(self._r0)
         if(self._r0[-1] != self._crc):
